@@ -1,9 +1,9 @@
-# Desenvolva a classe de Empresa aqui
 from datetime import datetime
 import json
 import os
 from traceback import print_tb
 from funcionario import Funcionario
+from gerente import Gerente
 
 class Empresa:
     def __init__(self, nome, cnpj) -> None:
@@ -23,9 +23,7 @@ class Empresa:
         emploee.email = email
         emploee.empresa = self.nome
         
-        # print(emploee.__dict__)
         self.contratados.append(emploee)
-        # self.contratados.append(emploee)
         return "Funcionario contratado!"
 
 
@@ -43,7 +41,6 @@ class Empresa:
                 "mes":datetime.now().strftime("%B"),
                 "admissao":funcionario.admissao
             }
-            # print(obj)
             nome_funcionario = "_".join(funcionario.nome_completo.split())
             os.mkdir(f"./empresas/{empresa}")
 
@@ -67,28 +64,39 @@ class Empresa:
         return open(holerite_path,"r").read()
 
     def demissao(self,funcionario):
-        # print(funcionario)
-        # print(self.contratados)
         if funcionario in self.contratados:
             self.contratados.pop(self.contratados.index(funcionario))
         
         else:
             return "Funcionário não pertence a empresa ou não encontrado"
         
-        menagers = [pessoa for pessoa in self.contratados if pessoa.funcao=="Gerente"]
+        managers = [pessoa for pessoa in self.contratados if pessoa.funcao=="Gerente"]
         if funcionario.funcao=="Funcionario":
-            for menager in menagers:
-                if funcionario in menager.funcionarios:
-                    menager.funcionarios.pop(menager.funcionarios.index(funcionario))
+            for manager in managers:
+                if funcionario in manager.funcionarios:
+                    manager.funcionarios.pop(manager.funcionarios.index(funcionario))
             return "Funcionário demitido"
         else:
             return "Gerente demitido" 
 
-    def promocao():
-        ...
+    def promocao(self, funcionario):
+        self.demissao(funcionario)
+        new_manager = Gerente(funcionario.nome_completo, funcionario.cpf, funcionario.salario)
+        self.contratar_funcionario(new_manager)
+        return new_manager
+    
+    def aumento_salarial(self, funcionario):
+        managers = [pessoa for pessoa in self.contratados if pessoa.funcao=="Gerente"]
+        for manager in managers:
+                if funcionario in manager.funcionarios:
+                    funcionario.salario += funcionario.salario*0.1
+        print(funcionario.salario)
+        if funcionario.salario>=8000:
+            self.promocao(funcionario)
+        return funcionario
         
-rajs = Funcionario(" rajsdo da silva",1,300)
-jose = Funcionario(" jose da silva",232,2800)
+rajs = Funcionario(" rajsdo da silva",1,7400)
+jose = Funcionario(" jose da silva",232,7400)
 kenzie = Empresa("kenzie",3332200001223)
 
 kenzie.contratar_funcionario(rajs)
@@ -96,4 +104,5 @@ kenzie.contratar_funcionario(jose)
 
 print(kenzie.contratados)
 
-print(len(kenzie.contratados))
+
+print(kenzie.aumento_salarial(jose))

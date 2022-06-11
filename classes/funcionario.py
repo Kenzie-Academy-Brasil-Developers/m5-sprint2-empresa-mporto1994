@@ -1,7 +1,4 @@
-# Desenvolva a classe de Funcionario aqui
-
 from datetime import datetime
-
 
 class Funcionario:
     funcao = "Funcionario"
@@ -15,4 +12,3 @@ class Funcionario:
         return f"<{self.funcao}: {self.nome_completo}"
 
 jose = Funcionario("jose",1,2800)
-# print(jose.__str__())

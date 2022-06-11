@@ -1,4 +1,3 @@
-# Desenvolva a classe de Gerente aqui
 from funcionario import Funcionario
 
 class Gerente(Funcionario):
@@ -7,7 +6,6 @@ class Gerente(Funcionario):
         super().__init__(nome, cpf, salario)
         self.funcionarios = []
         
-    
     def __len__(self):
         return len(self.funcionarios)
 
@@ -17,6 +15,3 @@ class Gerente(Funcionario):
             
         self.funcionarios.append(funcionario)
         return True
-
-    
-        
